@@ -10,7 +10,7 @@ import PasswordStrengthMeter from '../../PasswordStrengthMeter/PasswordStrengthM
 import styles from '../formStyles.module.css';
 
 interface RhfFormProps {
-  onSuccess: () => void;
+  onSuccess: (submissionId: string) => void;
 }
 
 const COUNTRY_LIST_ID = 'rhf-country-list';
@@ -42,7 +42,7 @@ function RhfForm({ onSuccess }: RhfFormProps) {
 
   const onValid = handleSubmit(async (values) => {
     const image = await fileToBase64(values.image);
-    dispatch(
+    const action = dispatch(
       addSubmission({
         name: values.name,
         age: values.age,
@@ -53,7 +53,7 @@ function RhfForm({ onSuccess }: RhfFormProps) {
         image,
       })
     );
-    onSuccess();
+    onSuccess(action.payload.id);
   });
 
   return (

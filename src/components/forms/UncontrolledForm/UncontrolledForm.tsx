@@ -8,7 +8,7 @@ import PasswordStrengthMeter from '../../PasswordStrengthMeter/PasswordStrengthM
 import styles from '../formStyles.module.css';
 
 interface UncontrolledFormProps {
-  onSuccess: () => void;
+  onSuccess: (submissionId: string) => void;
 }
 
 const COUNTRY_LIST_ID = 'uncontrolled-country-list';
@@ -52,7 +52,7 @@ function UncontrolledForm({ onSuccess }: UncontrolledFormProps) {
 
     setErrors({});
     const image = await fileToBase64(result.data.image);
-    dispatch(
+    const action = dispatch(
       addSubmission({
         name: result.data.name,
         age: result.data.age,
@@ -63,7 +63,7 @@ function UncontrolledForm({ onSuccess }: UncontrolledFormProps) {
         image,
       })
     );
-    onSuccess();
+    onSuccess(action.payload.id);
   };
 
   return (
