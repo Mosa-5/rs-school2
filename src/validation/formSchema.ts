@@ -13,11 +13,12 @@ function startsWithUppercase(value: string): boolean {
 
 const imageSchema = z
   .instanceof(File, { message: 'Image is required' })
-  .refine((file) => file.size <= MAX_IMAGE_SIZE, {
-    message: 'Image must be 2 MB or smaller',
-  })
+  .refine((file) => file.size > 0, { message: 'Image is required' })
   .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
     message: 'Image must be a PNG or JPEG file',
+  })
+  .refine((file) => file.size <= MAX_IMAGE_SIZE, {
+    message: 'Image must be 2 MB or smaller',
   });
 
 export function createFormSchema(countries: string[]) {
