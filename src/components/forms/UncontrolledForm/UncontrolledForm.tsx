@@ -21,8 +21,10 @@ function UncontrolledForm({ onSuccess }: UncontrolledFormProps) {
 
   const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const imageEntry = formData.get('image');
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const imageInput = form.elements.namedItem('image') as HTMLInputElement | null;
+    const imageFile = imageInput?.files?.[0];
 
     const raw = {
       name: String(formData.get('name') ?? ''),
@@ -33,7 +35,7 @@ function UncontrolledForm({ onSuccess }: UncontrolledFormProps) {
       password: String(formData.get('password') ?? ''),
       confirmPassword: String(formData.get('confirmPassword') ?? ''),
       acceptTerms: formData.get('acceptTerms') === 'on',
-      image: imageEntry instanceof File ? imageEntry : undefined,
+      image: imageFile,
     };
 
     const result = createFormSchema(countries).safeParse(raw);
